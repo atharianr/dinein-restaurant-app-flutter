@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/data/model/restaurant.dart';
+import 'package:restaurant_app/provider/favorite/favorite_icon_provider.dart';
 
-import '../../data/model/tourism.dart';
-import '../../provider/bookmark/local_database_provider.dart';
-import '../../provider/detail/bookmark_icon_provider.dart';
+import '../../provider/favorite/local_database_provider.dart';
 
-class BookmarkIconWidget extends StatefulWidget {
-  final Tourism tourism;
+class FavoriteIconWidget extends StatefulWidget {
+  final Restaurant restaurant;
 
-  const BookmarkIconWidget({
+  const FavoriteIconWidget({
     super.key,
-    required this.tourism,
+    required this.restaurant,
   });
 
   @override
-  State<BookmarkIconWidget> createState() => _BookmarkIconWidgetState();
+  State<FavoriteIconWidget> createState() => _FavoriteIconWidgetState();
 }
 
-class _BookmarkIconWidgetState extends State<BookmarkIconWidget> {
+class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
   @override
   void initState() {
     final localDatabaseProvider = context.read<LocalDatabaseProvider>();
-    final bookmarkIconProvider = context.read<BookmarkIconProvider>();
+    final favoriteIconProvider = context.read<FavoriteIconProvider>();
 
     Future.microtask(() async {
-      await localDatabaseProvider.loadTourismById(widget.tourism.id);
-      final value = localDatabaseProvider.checkItemBookmark(widget.tourism.id);
-      bookmarkIconProvider.isBookmarked = value;
+      await localDatabaseProvider.loadRestaurantById(widget.restaurant.id);
+      final value =
+          localDatabaseProvider.isRestaurantFavorite(widget.restaurant.id);
+      favoriteIconProvider.isFavorite = value;
     });
 
     super.initState();
@@ -37,21 +38,22 @@ class _BookmarkIconWidgetState extends State<BookmarkIconWidget> {
     return IconButton(
       onPressed: () async {
         final localDatabaseProvider = context.read<LocalDatabaseProvider>();
-        final bookmarkIconProvider = context.read<BookmarkIconProvider>();
-        final isBookmarked = bookmarkIconProvider.isBookmarked;
+        final favoriteIconProvider = context.read<FavoriteIconProvider>();
+        final isFavorite = favoriteIconProvider.isFavorite;
 
-        if (!isBookmarked) {
-          await localDatabaseProvider.saveTourism(widget.tourism);
+        if (!isFavorite) {
+          await localDatabaseProvider.saveRestaurant(widget.restaurant);
         } else {
-          await localDatabaseProvider.removeTourismById(widget.tourism.id);
+          await localDatabaseProvider
+              .removeRestaurantById(widget.restaurant.id);
         }
-        bookmarkIconProvider.isBookmarked = !isBookmarked;
-        localDatabaseProvider.loadAllTourism();
+        favoriteIconProvider.isFavorite = !isFavorite;
+        localDatabaseProvider.loadAllRestaurants();
       },
       icon: Icon(
-        context.watch<BookmarkIconProvider>().isBookmarked
-            ? Icons.bookmark
-            : Icons.bookmark_outline,
+        context.watch<FavoriteIconProvider>().isFavorite
+            ? Icons.favorite_rounded
+            : Icons.favorite_outline_rounded,
       ),
     );
   }

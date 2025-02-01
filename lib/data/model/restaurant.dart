@@ -45,4 +45,14 @@ class Restaurant {
             : List<CustomerReview>.from(json["customerReviews"]!
                 .map((x) => CustomerReview.fromJson(x))),
       );
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      "id": id,
+      "name": name,
+      "city": city,
+      "rating": rating,
+      "pictureId": pictureId,
+    };
+  }
 }

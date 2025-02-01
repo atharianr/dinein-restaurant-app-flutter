@@ -1,23 +1,19 @@
+import 'package:restaurant_app/data/model/restaurant.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../model/tourism.dart';
-
 class LocalDatabaseService {
-  static const String _databaseName = 'tourism-app.db';
-  static const String _tableName = 'tourism';
+  static const String _databaseName = 'dinein.db';
+  static const String _tableName = 'restaurant';
   static const int _version = 1;
 
   Future<void> createTables(Database database) async {
     await database.execute(
       """CREATE TABLE $_tableName(
-       id INTEGER PRIMARY KEY,
+       id TEXT PRIMARY KEY,
        name TEXT,
-       description TEXT,
-       address TEXT,
-       longitude REAL,
-       latitude REAL,
-       like INTEGER,
-       image TEXT
+       city TEXT,
+       rating REAL,
+       pictureId TEXT
      )
      """,
     );
@@ -33,10 +29,10 @@ class LocalDatabaseService {
     );
   }
 
-  Future<int> insertItem(Tourism tourism) async {
+  Future<int> insertItem(Restaurant restaurant) async {
     final db = await _initializeDb();
 
-    final data = tourism.toJson();
+    final data = restaurant.toJson();
     final id = await db.insert(
       _tableName,
       data,
@@ -45,26 +41,26 @@ class LocalDatabaseService {
     return id;
   }
 
-  Future<List<Tourism>> getAllItems() async {
+  Future<List<Restaurant>> getAllItems() async {
     final db = await _initializeDb();
     final results = await db.query(_tableName);
 
-    return results.map((result) => Tourism.fromJson(result)).toList();
+    return results.map((result) => Restaurant.fromJson(result)).toList();
   }
 
-  Future<Tourism> getItemById(int id) async {
+  Future<Restaurant> getItemById(String? id) async {
     final db = await _initializeDb();
     final results =
         await db.query(_tableName, where: "id = ?", whereArgs: [id], limit: 1);
 
-    return results.map((result) => Tourism.fromJson(result)).first;
+    return results.map((result) => Restaurant.fromJson(result)).first;
   }
 
-  Future<int> removeItem(int id) async {
+  Future<int> removeItem(String? id) async {
     final db = await _initializeDb();
-
     final result =
         await db.delete(_tableName, where: "id = ?", whereArgs: [id]);
+
     return result;
   }
 }

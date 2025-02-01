@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/add_review_text_field_provider.dart';
+import 'package:restaurant_app/provider/favorite/favorite_icon_provider.dart';
+import 'package:restaurant_app/provider/favorite/local_database_provider.dart';
+import 'package:restaurant_app/provider/index_nav_provider.dart';
 import 'package:restaurant_app/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_app/provider/restaurant_list_provider.dart';
 import 'package:restaurant_app/provider/restaurant_reviews_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
-import 'package:restaurant_app/screen/home/home_screen.dart';
+import 'package:restaurant_app/screen/main/main_screen.dart';
 import 'package:restaurant_app/static/navigation/navigation_route.dart';
 import 'package:restaurant_app/style/theme/dine_in_theme.dart';
 
 import 'data/api/api_service.dart';
+import 'data/local/local_database_service.dart';
 
 void main() {
   runApp(
@@ -17,6 +21,20 @@ void main() {
       providers: [
         Provider(
           create: (context) => ApiServices(),
+        ),
+        Provider(
+          create: (context) => LocalDatabaseService(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => IndexNavProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocalDatabaseProvider(
+            context.read<LocalDatabaseService>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FavoriteIconProvider(),
         ),
         ChangeNotifierProvider(
           create: (context) => AddReviewTextFieldProvider(),
@@ -52,9 +70,9 @@ class MainApp extends StatelessWidget {
       theme: DineInTheme.lightTheme,
       darkTheme: DineInTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: NavigationRoute.homeRoute.name,
+      initialRoute: NavigationRoute.mainRoute.name,
       routes: {
-        NavigationRoute.homeRoute.name: (context) => const HomeScreen(),
+        NavigationRoute.mainRoute.name: (context) => const MainScreen(),
         NavigationRoute.detailRoute.name: (context) => DetailScreen(
               restaurantId:
                   ModalRoute.of(context)?.settings.arguments as String,
