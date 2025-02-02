@@ -7,15 +7,20 @@ import 'package:restaurant_app/provider/index_nav_provider.dart';
 import 'package:restaurant_app/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_app/provider/restaurant_list_provider.dart';
 import 'package:restaurant_app/provider/restaurant_reviews_provider.dart';
+import 'package:restaurant_app/provider/settings/settings_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
 import 'package:restaurant_app/screen/main/main_screen.dart';
+import 'package:restaurant_app/services/shared_preferences_service.dart';
 import 'package:restaurant_app/static/navigation/navigation_route.dart';
 import 'package:restaurant_app/style/theme/dine_in_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/api/api_service.dart';
 import 'data/local/local_database_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
   runApp(
     MultiProvider(
       providers: [
@@ -24,6 +29,14 @@ void main() {
         ),
         Provider(
           create: (context) => LocalDatabaseService(),
+        ),
+        Provider(
+          create: (context) => SharedPreferencesService(prefs),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SettingsProvider(
+            context.read<SharedPreferencesService>(),
+          ),
         ),
         ChangeNotifierProvider(
           create: (context) => IndexNavProvider(),
@@ -69,7 +82,10 @@ class MainApp extends StatelessWidget {
       title: "DineIn",
       theme: DineInTheme.lightTheme,
       darkTheme: DineInTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      // themeMode: ThemeMode.system,
+      themeMode: context.watch<SettingsProvider>().isDarkMode
+          ? ThemeMode.dark
+          : ThemeMode.light,
       initialRoute: NavigationRoute.mainRoute.name,
       routes: {
         NavigationRoute.mainRoute.name: (context) => const MainScreen(),
