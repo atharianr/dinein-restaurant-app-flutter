@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/constants/constants.dart';
 
-import '../../services/shared_preferences_service.dart';
+import '../../services/sharedpreferences/shared_preferences_service.dart';
 
 class SettingsProvider extends ChangeNotifier {
   final SharedPreferencesService _service;

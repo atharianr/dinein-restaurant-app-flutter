@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/settings/settings_provider.dart';
 
+import '../../provider/local_notification_provider.dart';
+import '../../services/workmanager/workmanager_service.dart';
 import '../../style/color/dine_in_colors.dart';
 import '../../style/typography/dine_in_text_styles.dart';
 import '../widget/switch_text_widget.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +48,20 @@ class SettingsScreen extends StatelessWidget {
                       : "Enable Notifications",
               state: context.watch<SettingsProvider>().isNotificationEnabled,
               onChanged: (state) {
+                var isPermissionGranted =
+                    context.read<LocalNotificationProvider>().permission ??
+                        false;
+                if (!isPermissionGranted) {
+                  _requestPermission();
+                  return;
+                }
+
+                if (state) {
+                  _runBackgroundPeriodicTask();
+                } else {
+                  _cancelAllTaskInBackground();
+                }
+
                 context
                     .read<SettingsProvider>()
                     .saveNotificationSettings(state);
@@ -50,5 +71,17 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _requestPermission() async {
+    context.read<LocalNotificationProvider>().requestPermissions();
+  }
+
+  void _runBackgroundPeriodicTask() async {
+    context.read<WorkmanagerService>().runPeriodicTask();
+  }
+
+  void _cancelAllTaskInBackground() async {
+    context.read<WorkmanagerService>().cancelAllTask();
   }
 }

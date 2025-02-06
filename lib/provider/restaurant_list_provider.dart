@@ -27,7 +27,8 @@ class RestaurantListProvider extends ChangeNotifier {
         notifyListeners();
       }
     } on Exception catch (e) {
-      _resultState = RestaurantListErrorState(e.toString());
+      _resultState = RestaurantListErrorState(
+          "Oops! Something went wrong. Please check your internet connection and try again.");
       notifyListeners();
     }
   }
@@ -46,8 +47,9 @@ class RestaurantListProvider extends ChangeNotifier {
         _resultState = RestaurantListLoadedState(result.restaurants);
         notifyListeners();
       }
-    } on Exception catch (e) {
-      _resultState = RestaurantListErrorState(e.toString());
+    } on Exception {
+      _resultState = RestaurantListErrorState(
+          "Oops! Something went wrong. Please check your internet connection and try again.");
       notifyListeners();
     }
   }

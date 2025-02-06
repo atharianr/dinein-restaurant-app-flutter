@@ -4,13 +4,16 @@ import 'package:restaurant_app/provider/add_review_text_field_provider.dart';
 import 'package:restaurant_app/provider/favorite/favorite_icon_provider.dart';
 import 'package:restaurant_app/provider/favorite/local_database_provider.dart';
 import 'package:restaurant_app/provider/index_nav_provider.dart';
+import 'package:restaurant_app/provider/local_notification_provider.dart';
 import 'package:restaurant_app/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_app/provider/restaurant_list_provider.dart';
 import 'package:restaurant_app/provider/restaurant_reviews_provider.dart';
 import 'package:restaurant_app/provider/settings/settings_provider.dart';
 import 'package:restaurant_app/screen/detail/detail_screen.dart';
 import 'package:restaurant_app/screen/main/main_screen.dart';
-import 'package:restaurant_app/services/shared_preferences_service.dart';
+import 'package:restaurant_app/services/notification/local_notification_service.dart';
+import 'package:restaurant_app/services/sharedpreferences/shared_preferences_service.dart';
+import 'package:restaurant_app/services/workmanager/workmanager_service.dart';
 import 'package:restaurant_app/static/navigation/navigation_route.dart';
 import 'package:restaurant_app/style/theme/dine_in_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +35,19 @@ void main() async {
         ),
         Provider(
           create: (context) => SharedPreferencesService(prefs),
+        ),
+        Provider(
+          create: (context) => LocalNotificationService()
+            ..init()
+            ..configureLocalTimeZone(),
+        ),
+        Provider(
+          create: (context) => WorkmanagerService()..init(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocalNotificationProvider(
+            context.read<LocalNotificationService>(),
+          )..requestPermissions(),
         ),
         ChangeNotifierProvider(
           create: (context) => SettingsProvider(

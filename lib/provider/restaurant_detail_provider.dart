@@ -26,8 +26,9 @@ class RestaurantDetailProvider extends ChangeNotifier {
         _resultState = RestaurantDetailLoadedState(result.restaurant);
         notifyListeners();
       }
-    } on Exception catch (e) {
-      _resultState = RestaurantDetailErrorState(e.toString());
+    } on Exception {
+      _resultState = RestaurantDetailErrorState(
+          "Oops! Something went wrong. Please check your internet connection and try again.");
       notifyListeners();
     }
   }
