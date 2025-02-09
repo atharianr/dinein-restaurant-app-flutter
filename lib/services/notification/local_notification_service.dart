@@ -9,7 +9,6 @@ class LocalNotificationService {
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-    print("LNS init");
     const initializationSettingsAndroid = AndroidInitializationSettings(
       'app_icon',
     );
@@ -93,21 +92,17 @@ class LocalNotificationService {
     String channelId = "1",
     String channelName = "Daily Restaurant Notification",
   }) async {
-    print("LNS 1");
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       channelId,
       channelName,
       importance: Importance.max,
       priority: Priority.high,
     );
-    print("LNS 2");
     const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
-    print("LNS 3");
     final notificationDetails = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );
-    print("LNS 4");
     await flutterLocalNotificationsPlugin.show(
       id,
       title,
@@ -115,7 +110,6 @@ class LocalNotificationService {
       notificationDetails,
       payload: payload,
     );
-    print("LNS 5");
   }
 
   Future<void> scheduleDailyNotification({

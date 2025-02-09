@@ -89,8 +89,24 @@ void main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  @override
+  void initState() {
+    var isPermissionGranted =
+        context.read<LocalNotificationProvider>().permission ?? false;
+    if (!isPermissionGranted) {
+      _requestPermission();
+      return;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +114,6 @@ class MainApp extends StatelessWidget {
       title: "DineIn",
       theme: DineInTheme.lightTheme,
       darkTheme: DineInTheme.darkTheme,
-      // themeMode: ThemeMode.system,
       themeMode: context.watch<SettingsProvider>().isDarkMode
           ? ThemeMode.dark
           : ThemeMode.light,
@@ -111,5 +126,9 @@ class MainApp extends StatelessWidget {
             ),
       },
     );
+  }
+
+  Future<void> _requestPermission() async {
+    context.read<LocalNotificationProvider>().requestPermissions();
   }
 }

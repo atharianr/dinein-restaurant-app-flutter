@@ -59,17 +59,11 @@ class WorkmanagerService {
 
     // Calculate the delay
     final initialDelay = targetTime.difference(now);
-    print("Initial Delay: ${initialDelay.inHours} hours");
-    print(
-        "Initial Delay: ${initialDelay.inMinutes - initialDelay.inHours * 60} minutes");
-    print(
-        "Initial Delay: ${initialDelay.inSeconds - initialDelay.inMinutes * 60} seconds");
 
     await _workmanager.registerPeriodicTask(
       DineInWorkmanager.periodic.uniqueName,
       DineInWorkmanager.periodic.taskName,
-      // frequency: const Duration(hours: 24), // Repeat every 24 hours
-      frequency: const Duration(minutes: 16),
+      frequency: const Duration(hours: 24), // Repeat every 24 hours
       initialDelay: initialDelay, // Start at the calculated 11 AM
       inputData: {
         "data": "This is a valid payload from periodic task workmanager",
