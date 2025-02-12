@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/provider/add_review_text_field_provider.dart';
+import 'package:restaurant_app/provider/detail/add_review_text_field_provider.dart';
 
-import '../../provider/restaurant_reviews_provider.dart';
+import '../../provider/detail/restaurant_reviews_provider.dart';
 import '../../static/state/restaurant_reviews_result_state.dart';
 import '../../style/color/dine_in_colors.dart';
 import '../../style/typography/dine_in_text_styles.dart';

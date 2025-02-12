@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_app/screen/favorite/favorite_screen.dart';
 import 'package:restaurant_app/screen/settings/settings_screen.dart';
 
-import '../../provider/index_nav_provider.dart';
+import '../../provider/home/index_nav_provider.dart';
+import '../../style/color/dine_in_colors.dart';
 import '../home/home_screen.dart';
 
 class MainScreen extends StatelessWidget {
@@ -26,7 +27,8 @@ class MainScreen extends StatelessWidget {
         onTap: (index) {
           context.read<IndexNavProvider>().setIndexBottomNavBar = index;
         },
-        items: const [
+        selectedItemColor: DineInColors.buttonFilledColor.getColor(context),
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: "Home",

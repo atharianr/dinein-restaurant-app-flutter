@@ -1,6 +1,6 @@
 import 'package:restaurant_app/data/model/category.dart';
 import 'package:restaurant_app/data/model/customer_review.dart';
-import 'package:restaurant_app/data/model/menus.dart';
+import 'package:restaurant_app/data/model/menu.dart';
 import 'package:restaurant_app/data/model/response/restaurant_detail_response.dart';
 import 'package:restaurant_app/data/model/response/restaurant_list_response.dart';
 import 'package:restaurant_app/data/model/restaurant.dart';
@@ -40,7 +40,7 @@ class ResponseMock {
       categories: [
         Category(name: "Italia"),
       ],
-      menus: Menus(
+      menus: Menu(
         foods: [
           Category(name: "Paket rosemary"),
         ],

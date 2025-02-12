@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import '../data/api/api_service.dart';
-import '../static/state/restaurant_detail_result_state.dart';
+import '../../data/api/api_service.dart';
+import '../../static/state/restaurant_detail_result_state.dart';
 
 class RestaurantDetailProvider extends ChangeNotifier {
   final ApiServices _apiServices;

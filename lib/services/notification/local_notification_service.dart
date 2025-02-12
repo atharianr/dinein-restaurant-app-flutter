@@ -74,16 +74,6 @@ class LocalNotificationService {
     tz.setLocalLocation(tz.getLocation(timeZoneName));
   }
 
-  tz.TZDateTime _nextInstanceDateTime(int time) {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, time);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    return scheduledDate;
-  }
-
   Future<void> showNotification({
     required int id,
     required String title,
@@ -110,49 +100,5 @@ class LocalNotificationService {
       notificationDetails,
       payload: payload,
     );
-  }
-
-  Future<void> scheduleDailyNotification({
-    required int id,
-    String channelId = "999",
-    String channelName = "Daily Restaurant Notification",
-  }) async {
-    final androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      channelId,
-      channelName,
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
-
-    final notificationDetails = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    final datetimeSchedule = _nextInstanceDateTime(11);
-
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      'Daily scheduled notification title',
-      'This is a body of daily scheduled notification',
-      datetimeSchedule,
-      notificationDetails,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.wallClockTime,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
-  }
-
-  Future<List<PendingNotificationRequest>> pendingNotificationRequests() async {
-    final List<PendingNotificationRequest> pendingNotificationRequests =
-        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    return pendingNotificationRequests;
-  }
-
-  Future<void> cancelNotification(int id) async {
-    await flutterLocalNotificationsPlugin.cancel(id);
   }
 }

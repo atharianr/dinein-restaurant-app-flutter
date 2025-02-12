@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/provider/restaurant_list_provider.dart';
 import 'package:restaurant_app/screen/widget/dine_in_text_field_widget.dart';
 
+import '../../provider/home/restaurant_list_provider.dart';
 import '../../static/navigation/navigation_route.dart';
 import '../../static/state/restaurant_list_result_state.dart';
 import '../../style/color/dine_in_colors.dart';

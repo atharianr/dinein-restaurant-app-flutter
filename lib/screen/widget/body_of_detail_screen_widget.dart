@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/model/customer_review.dart';
-import 'package:restaurant_app/provider/restaurant_reviews_provider.dart';
+import 'package:restaurant_app/provider/detail/restaurant_reviews_provider.dart';
 import 'package:restaurant_app/screen/widget/add_review_dialog_widget.dart';
 import 'package:restaurant_app/screen/widget/review_list_widget.dart';
 import 'package:restaurant_app/static/state/restaurant_reviews_result_state.dart';
 
 import '../../data/model/restaurant.dart';
-import '../../provider/add_review_text_field_provider.dart';
+import '../../provider/detail/add_review_text_field_provider.dart';
 import '../../style/typography/dine_in_text_styles.dart';
 import 'detail_banner_widget.dart';
 

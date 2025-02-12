@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/provider/favorite/favorite_icon_provider.dart';
-import 'package:restaurant_app/provider/restaurant_detail_provider.dart';
 
+import '../../provider/detail/restaurant_detail_provider.dart';
 import '../../static/state/restaurant_detail_result_state.dart';
 import '../../style/color/dine_in_colors.dart';
 import '../../style/typography/dine_in_text_styles.dart';

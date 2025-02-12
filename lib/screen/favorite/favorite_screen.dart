@@ -18,6 +18,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     Future.microtask(() {
+      if (!mounted) return;
       context.read<LocalDatabaseProvider>().loadAllRestaurants();
     });
     super.initState();
@@ -53,15 +54,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 },
               ),
             _ => Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Center(
-                child: Text(
-                  "You don't have any favorites :((",
-                  textAlign: TextAlign.center,
-                  style: DineInTextStyles.bodyLargeBold,
+                padding: const EdgeInsets.all(24.0),
+                child: Center(
+                  child: Text(
+                    "You don't have any favorites :((",
+                    textAlign: TextAlign.center,
+                    style: DineInTextStyles.bodyLargeBold,
+                  ),
                 ),
               ),
-            ),
           };
         },
       ),
